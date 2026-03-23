@@ -442,8 +442,8 @@
 %%% 書籍サブタイトル %%%
 \DeclareFieldFormat[book,mvbook,online,thesis,inproceedings,incollection]{subtitle}{%
   \ifthenelse{\boolean{japanese}}{%
-    % 日本語論文の場合
-    \printtext{------}#1\printtext{------}\setunit{\addjspace}%
+    % 日本語論文の場合：副題は全角ダッシュ2つで囲む（JPA規定）
+    \printtext{――}#1\printtext{――}\setunit{\addjspace}%
   }{
     \emph{\addcolon\addspace#1}%
   }
@@ -452,8 +452,8 @@
 %%% 論文サブタイトル %%%
 \DeclareFieldFormat[article,report,misc,inbook]{subtitle}{%
   \ifthenelse{\boolean{japanese}}{%
-    % 日本語論文の場合
-    \addthinspace\printtext{------}#1\printtext{------}\setunit{\addjspace}%
+    % 日本語論文の場合：副題は全角ダッシュ2つで囲む（JPA規定）
+    \addthinspace\printtext{――}#1\printtext{――}\setunit{\addjspace}%
   }{%
     \addcolon\addspace#1%
   }
@@ -977,8 +977,12 @@
   \iffieldundef{subtitle}{}{%
     \printfield{subtitle}%
   }
-  % 誌名
-  \setunit{\addperiod\addspace}%
+  % 誌名（日本語文献はタイトル末尾にピリオド不要：JPA規定）
+  \ifthenelse{\boolean{japanese}}{%
+    \setunit{\addjspace}%
+  }{%
+    \setunit{\addperiod\addspace}%
+  }%
   \printfield{journaltitle}\addspace%
   % 巻数・引用ページ（オンライン早期公開かどうかを確認してから処理）
   \iffieldundef{howpublished}{
