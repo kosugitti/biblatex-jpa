@@ -117,19 +117,11 @@
       \addcomma\space\ldots\space%
     }{%
       \ifthenelse{\value{listcount}>\maxprtnames\AND\value{listcount}<\value{listtotal}}{}{%
-        \ifnameundef{origauthor}{%
-          \usebibmacro{name:family-given}%
-          {\namepartfamily}%
-          {\namepartgiveni}%
-          {\namepartprefix}%
-          {\namepartsuffix}%
-        }{%
-          \usebibmacro{name:family-given}%
-          {\namepartfamily}%
-          {\namepartgiven}%
-          {\namepartprefix}%
-          {\namepartsuffix}%
-        }%
+        \usebibmacro{name:family-given}%
+        {\namepartfamily}%
+        {\namepartgiven}%
+        {\namepartprefix}%
+        {\namepartsuffix}%
       }%
     }%
   }%
@@ -468,7 +460,7 @@
 
 %%% 雑誌名 %%%
 \DeclareFieldFormat[article,misc]{journaltitle}{%
-  \ifthenelse{\boolean{japanese}}{#1,}{\mkbibemph{#1}\isdot,}%
+  \ifthenelse{\boolean{japanese}}{#1}{\mkbibemph{#1}}%
 }%
 
 %%% 大会発表論文集，Proceedings %%%
@@ -977,11 +969,12 @@
   \iffieldundef{subtitle}{}{%
     \printfield{subtitle}%
   }
+  \newunit
   % 誌名
-  \setunit{\addperiod\addspace}%
-  \printfield{journaltitle}\addspace%
+  \printfield{journaltitle}
   % 巻数・引用ページ（オンライン早期公開かどうかを確認してから処理）
   \iffieldundef{howpublished}{
+    \setunit*{\addcomma\addspace}
     \usebibmacro{volume+issues}
     \iffieldundef{pages}{}{\printfield{pages}\adddot}%
   }{\printtext{%
